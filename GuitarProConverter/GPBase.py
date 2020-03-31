@@ -234,6 +234,7 @@ class SemiHarmonic(HarmonicEffect):
 class FeedbackHarmonic(HarmonicEffect):
    def FeedbackHarmonic(self): type = 6
 
+
 class LyricLine:
     startingMeasure = 1
     lyrics = ""
@@ -245,9 +246,14 @@ class Lyrics:
 
     def Lyrics(self):
         trackChoice = -1
-        lines = LyricLine[maxLineCount]
-        for (x = 0, x < maxLineCount; x++)
-            lines[x] = new LyricLine()
+        lines = LyricLine[__maxLineCount]
+        x = 0
+        while x < __maxLineCount:
+            lines[x] = LyricLine()
+            x += 1
+
+
+
 
 class Barre:
     start = 0
