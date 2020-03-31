@@ -249,10 +249,7 @@ class Lyrics:
         for (x = 0, x < maxLineCount; x++)
             lines[x] = new LyricLine()
 
-
-'''
 class Barre:
-
     start = 0
     end = 0
     fret = 0
@@ -261,10 +258,3 @@ class Barre:
     
     def range(self):   
         return [self.start, self.end]
-'''
-''' Test
-x = Barre()
-x.Barre(1,2,6)
-print(x.fret, x.range())
-'''
-
