@@ -233,12 +233,12 @@ class HarmonicEffect:
 
 #及其派生
 class NaturalHarmonic(HarmonicEffect):
-    def NaturalHarmonic(self): type = 1
+    def __init__(self): type = 1
 
 class ArtificialHarmonic(HarmonicEffect):
     pitch = 0
     octave = Octave.none
-    def ArtificialHarmonic(self, pitch = 0, octave = Octave.none):
+    def __init__(self, pitch = 0, octave = Octave.none):
         self.pitch = pitch; self.octave = octave; self.type = 2
 
 class TappedHarmonic(HarmonicEffect):
@@ -252,7 +252,7 @@ class SemiHarmonic(HarmonicEffect):
     def __init__(self): type = 5
 
 class FeedbackHarmonic(HarmonicEffect):
-   def FeedbackHarmonic(self): type = 6
+   def __init__(self): type = 6
 
 #=======================================================
 
@@ -278,7 +278,7 @@ class Barre:
     start = 0
     end = 0
     fret = 0
-    def Barre(self, fret, start, end):
+    def __init__(self, fret, start, end):
         self.start = start; self.fret = fret; self.end = end
     
     def range(self):   
