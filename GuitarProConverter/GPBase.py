@@ -275,10 +275,13 @@ class Lyrics:
 
 #==================================================
 class Barre:
-    start = 0
-    end = 0
-    fret = 0
-    def __init__(self, fret, start, end):
+    '''
+    Attributes:
+        start
+        end 
+        fret
+    '''
+    def __init__(self, fret = 0, start = 0, end = 0):
         self.start = start; self.fret = fret; self.end = end
     
     def range(self):   
@@ -332,9 +335,9 @@ class MixTableChange:
 
     def __init__(self, tempoName = "", hideTempo = True, useRSE = True):
     
-        self.tempoName = tempoName;
-        self.hideTempo = hideTempo;
-        self.useRSE = useRSE;
+        self.tempoName = tempoName
+        self.hideTempo = hideTempo
+        self.useRSE = useRSE
 
     def isJustWah(self):
     
@@ -344,8 +347,116 @@ class MixTableChange:
     
 
 class myColor:
+    '''
+    Attributes:
+        float r, g, b, a
+    '''
+    
     def __init__(self, r=1.0, g=1.0, b=1.0, a = 255.0):
-        this.r = r / 255.0;
-        this.g = g /255.0;
-        this.b = b / 255.0;
-        this.a = a / 255.0;
+        self.r = r / 255.0
+        self.g = g /255.0
+        self.b = b / 255.0
+        self.a = a / 255.0
+
+#=========================================
+class Padding:
+    '''
+    Attributes:
+        int right, top, left, bottom
+    '''
+    def __init__(self, right = 0, top=0, left=0, bottom = 0):
+        self.right = right; self.top = top; self.left = left; self.bottom = bottom
+
+class Point:
+    '''
+    Attributes:
+        int x, y
+    '''
+    def __init__(self, x=0, y=0):
+        self.x = x; self.y = y
+
+#枚举类
+@unique
+class HeaderFooterElements(Enum):
+    none = 0x000
+    title = 0x001
+    subtitle = 0x002
+    artist = 0x004
+    album = 0x008
+    words = 0x010
+    music = 0x020
+    wordsAndMusic = 0x040
+    copyright = 0x080
+    pageNumber = 0x100
+    all = title | subtitle | artist | album | words | music | wordsAndMusic | copyright | pageNumber
+
+#及其应用
+class PageSetup:
+    '''
+    描述文件的渲染方式（预设）：
+
+        %title%, %subtitle%, %artist%, %album%, %words%, %music%, %copyright%在具体曲目中会被对应的Song.*代替。
+        %N%, %P%则会根据具体页数变化
+    '''
+    
+    pageSize = Point(210,297)
+    pageMargin = Padding(10, 15, 10, 10)
+    scoreSizeProportion = 1.0
+    headerAndFooter = HeaderFooterElements.all
+    title = "%title%"
+    subtitle = "%subtitle%"
+    artist = "%artist%"
+    album = "%album%"
+    words = "Words by %words%"
+    music = "Music by %music%"
+    wordsAndMusic = "Words & Music by %WORDSMUSIC%"
+    copyright = "Copyright %copyright%\nAll Rights Reserved - International Copyright Secured"
+    pageNumber = "Page %N%/%P%"
+
+
+class PitchClass:
+    '''
+
+    '''
+    just = 0
+    accidental = 0
+    value = 0
+    intonation = ""
+    actualOvertone = 0.0
+
+    def __init__(self, arg0i = 0, arg1i = -1, arg0s = "", intonation = "", actualOvertone = 0.0):
+        _notes_sharp = ( "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" )
+        _notes_flat = ( "C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B" )
+        value = 0
+        str = ""
+        accidental = 0
+        pitch = 0
+        self.actualOvertone = actualOvertone
+        # ^ 使得在内部格式里更易于使用
+        if arg1i == -1:
+            if arg0s != "":
+                str = arg0s
+                x = 0
+                while x < len(_notes_sharp):
+                    if str == _notes_sharp[x]: value = x; break
+                    if str == _notes_flat[x]: value = x; break
+                    x += 1
+            else:
+                value = arg0i % 12
+               
+                str = _notes_sharp[max(value,0)]
+                if intonation == "flat": str = _notes_flat[value]
+
+            if str.endswith("b"): accidental = -1
+            elif str.endswith("#"): accidental = 1
+        else:
+            pitch = arg0i; accidental = arg1i
+            self.just = pitch % 12
+            self.accidental = accidental
+            self.value = self.just + accidental
+            if intonation != null: 
+                self.intonation = intonation
+            else:
+                if accidental == -1: self.intonation = "flat"
+                else: self.intonation = "sharp"   
+
